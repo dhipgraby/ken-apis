@@ -100,28 +100,28 @@ export class UserService {
       throw new HttpException('Invalid credentialss', HttpStatus.FORBIDDEN);
     }
 
-    if (findUser.email_verified === null) {
-      return await this.handleUnverifiedEmail(
-        findUser.email,
-        EmailActions.EMAIL_VERIFICATION,
-      );
-    }
+    // if (findUser.email_verified === null) {
+    //   return await this.handleUnverifiedEmail(
+    //     findUser.email,
+    //     EmailActions.EMAIL_VERIFICATION,
+    //   );
+    // }
 
-    if (findUser.isTwoFactorEnabled === true) {
-      if (code) {
-        const isValidCode = await this.handleTwoFactorCode(
-          code,
-          findUser.email,
-          findUser.isTwoFactorSmsEnabled
-        );
-        if (isValidCode !== true) return isValidCode;
-      } else {
-        return await this.handleTwoFactorRequest(
-          findUser.email,
-          'vendors.keneth.dev',
-        );
-      }
-    }
+    // if (findUser.isTwoFactorEnabled === true) {
+    //   if (code) {
+    //     const isValidCode = await this.handleTwoFactorCode(
+    //       code,
+    //       findUser.email,
+    //       findUser.isTwoFactorSmsEnabled
+    //     );
+    //     if (isValidCode !== true) return isValidCode;
+    //   } else {
+    //     return await this.handleTwoFactorRequest(
+    //       findUser.email,
+    //       'vendors.keneth.dev',
+    //     );
+    //   }
+    // }
 
     // if (findUser.isTwoFactorSmsEnabled === true) {
     //   if (smsCode) {
