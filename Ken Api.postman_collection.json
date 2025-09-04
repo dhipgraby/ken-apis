@@ -1,0 +1,2379 @@
+{
+	"info": {
+		"_postman_id": "67d01b8e-1973-4303-b8fb-1d6880ca396b",
+		"name": "Ken Apis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10458261",
+		"_collection_link": "https://onchainsol.postman.co/workspace/KenSpace~a964f7b2-a0c1-43b3-8761-789a6b0ecb81/collection/10458261-67d01b8e-1973-4303-b8fb-1d6880ca396b?action=share&source=collection_link&creator=10458261"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Welcome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"username\": \"kennow10\",\r\n    \"email\": \"bobby10@gmail.com\",\r\n    \"password\": \"Ken1234##\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AuthAPI}}/auth/signup",
+							"host": [
+								"{{AuthAPI}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>Username</th>\r",
+									"        <th>Email</th>\r",
+									"        <th>Status</th>\r",
+									"        <th>Message</th>\r",
+									"        <th>Token</th>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>{{response.user.username}}</td>\r",
+									"        <td>{{response.user.email}}</td>\r",
+									"        <td>{{response.status}}</td>\r",
+									"        <td>{{response.message}}</td>\r",
+									"        <td>{{response.token}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()};\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"identifier\":\"kennow\",\r\n    \"password\": \"Kennow2115##\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin-Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>Username</th>\r",
+									"        <th>Email</th>\r",
+									"        <th>Status</th>\r",
+									"        <th>Message</th>\r",
+									"        <th>Token</th>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>{{response.user.username}}</td>\r",
+									"        <td>{{response.user.email}}</td>\r",
+									"        <td>{{response.status}}</td>\r",
+									"        <td>{{response.message}}</td>\r",
+									"        <td>{{response.token}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()};\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"identifier\":\"admin\",\r\n    \"password\": \"Ken.admin##\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AuthApi}}/auth/admin-login",
+							"host": [
+								"{{AuthApi}}"
+							],
+							"path": [
+								"auth",
+								"admin-login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get logged-in User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJ1c2luZXNzIiwiaWQiOjUsImlhdCI6MTcxOTY3MjU0NSwiZXhwIjoxNzE5NzQ0NTQ1fQ._7jvGBynKWt3VJ04WZV4nZiuEkzasIw1OQ4d8bVAspA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://auth-api.keneth.dev/auth/user",
+							"protocol": "https",
+							"host": [
+								"auth-api",
+								"Ken",
+								"codes"
+							],
+							"path": [
+								"auth",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Email Verification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/auth/verify?token=b6b54454-ef5a-4e11-84a0-d82608dd9742",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"auth",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "b6b54454-ef5a-4e11-84a0-d82608dd9742"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"bob@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/auth/reset-password",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\":\"a1b43854-af37-415a-8095-7cf5d4ce6e70\",\r\n    \"password\":\"Kennow2115##\",\r\n    \"confirmPassword\":\"Kennow2115##\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/auth/verify-password-email",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"auth",
+								"verify-password-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Phone verification test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AuthAPI}}/auth/phone",
+							"host": [
+								"{{AuthAPI}}"
+							],
+							"path": [
+								"auth",
+								"phone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SMS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Individual",
+					"item": [
+						{
+							"name": "KYC",
+							"item": [
+								{
+									"name": "Phone Verification",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTQ2MTU5ODYsImV4cCI6MTcxNDY4Nzk4Nn0.NdTFouFoao_MJcKxSLhtzilrTpHbxE_Y32DLZD0uOog",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"phoneNumber\":\"697811727\",\r\n    \"phoneDialCode\":\"+34\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/sms-verification",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"sms-verification"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Verify Phone",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0MjU5NzU4LCJleHAiOjE3MTQzMzE3NTh9.tbHtmAr2JV2sBftmIaFLjvSV9JpbXxmzhGbYAQ1DAa0",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"code\":\"678570\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/verify-phone",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"verify-phone"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Personal Info",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0MzUwMDI1LCJleHAiOjE3MTQ0MjIwMjV9.EaPpPONUJDJbA21RfQDdT2hirY87DNSp5GPD6LTUiAg",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\":\"Kenneth\",\r\n    \"lastName\":\"Zambrano\",\r\n    \"dateOfBirth\":\"1992-05-19\",\r\n    \"nationality\":\"Venezuela\",\r\n    \"politicallyExposed\":false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/personal-info",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"personal-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Upload Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0Mjc3MDM5LCJleHAiOjE3MTQzNDkwMzl9.kPPfnKy1pOxn-S-p8LbeFWBzQNR3chQUHgeyJIjNxO0",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"identityUrl\":\"http//:localhost:3000\",\r\n    \"documentType\":\"Passport\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/upload-id",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"upload-id"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Upload Residence Proof",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0Mjc3MDM5LCJleHAiOjE3MTQzNDkwMzl9.kPPfnKy1pOxn-S-p8LbeFWBzQNR3chQUHgeyJIjNxO0",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"residenceAddress\":\"Calle Ferraz 58\",\r\n    \"residenceCountry\":\"Spain\",\r\n    \"proofOfResidence\":\"Utility Bill\",\r\n    \"residenceProofUrl\":\"http://localhost:3000\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/upload-residence-proof",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"upload-residence-proof"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Financial information",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0NTYwODM1LCJleHAiOjE3MTQ2MzI4MzV9.nuMAcwOA2KdQ0Hrepo8fNYhYNwX-Hhe4u1tt9KnNMkI",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"currentOccupation\": \"Programmer\",\r\n    \"activeInSectors\": true,\r\n    \"industry\": \"Finance\",\r\n    \"incomeEstimations\": [1000,10000,20000]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/update-financial-info",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"update-financial-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Ultimate Beneficiary",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0MzUwMDI1LCJleHAiOjE3MTQ0MjIwMjV9.EaPpPONUJDJbA21RfQDdT2hirY87DNSp5GPD6LTUiAg",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"ultimateBeneficiary\":false,\r\n    \"beneficiary\": \"Raul Sanchez\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/update-ultimate-beneficiary",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"update-ultimate-beneficiary"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "OriginOfFunds",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0MzUwMDI1LCJleHAiOjE3MTQ0MjIwMjV9.EaPpPONUJDJbA21RfQDdT2hirY87DNSp5GPD6LTUiAg",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"originOfFunds\": [\r\n        true,\r\n        true,\r\n        false,\r\n        false,\r\n        false,\r\n        false,\r\n        true,\r\n        false,\r\n        false\r\n    ],\r\n    \"otherFundsOrigin\": \"bitcoin\",\r\n    \"ultimateBeficiary\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/individual/update-origin-of-funds",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"individual",
+												"update-origin-of-funds"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Upload File",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTYxMTg1ODEsImV4cCI6MTcxNjE5MDU4MX0.18Swm4NNzPMx3jH5kYaSyeHUjT3sVzzdx4w2os_i47I",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"type": "file",
+													"src": "/C:/Users/kenno/Downloads/Group 9.png"
+												},
+												{
+													"key": "name",
+													"value": "kenneth",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/individual/upload",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"individual",
+												"upload"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get File",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYmJ5IiwiaWQiOjIsImlhdCI6MTcxNjIwNDA0NywiZXhwIjoxNzE2Mjc2MDQ3fQ.P_Por6ykEI_hymKNcKRIh2JvZgyLE8--PqsgEAir43M",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{UsersApi}}/kyc/individual/personal-id",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"individual",
+												"personal-id"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Individual Profile",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYmJ5IiwiaWQiOjIsImlhdCI6MTcxNjMwNDU0NCwiZXhwIjoxNzE2Mzc2NTQ0fQ._mxnLUISMwJAvG6ZZOzhpNuin2ilag0Yt7nMWcn7lyE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{UsersApi}}/kyc/individual/profile",
+									"host": [
+										"{{UsersApi}}"
+									],
+									"path": [
+										"kyc",
+										"individual",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Individual Personal Info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTQ4MzcxOTMsImV4cCI6MTcxNDkwOTE5M30.NuGYp3W-MHVZeiAApjVETZafdLVwz7CBmV9FPHRekkU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{UsersApi}}/kyc/individual/personal-info",
+									"host": [
+										"{{UsersApi}}"
+									],
+									"path": [
+										"kyc",
+										"individual",
+										"personal-info"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Business",
+					"item": [
+						{
+							"name": "KYC",
+							"item": [
+								{
+									"name": "Update Company Info",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTUzMDcxMjAsImV4cCI6MTcxNTM3OTEyMH0.mYgpWml-uuK0mpnvLQnifiWHrcWhwZfL7giNCX9WNKw",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"companyName\": \"ABC Corporation\",\r\n  \"registrationNumber\": \"123456789\",\r\n  \"foundingDate\": \"2023-01-15T08:00:00.000Z\",\r\n  \"companyAddress\": \"456 Business Street\",\r\n  \"companyZipCode\": \"12345\",\r\n  \"companyCountry\": \"United States\",\r\n  \"companyPhone\": \"+1234567890\",\r\n  \"companyCity\": \"Metropolis\",\r\n  \"companyEmail\": \"info@abccorp.com\",\r\n  \"companyMobile\": \"+1987654321\",\r\n  \"companyOpAddress\": \"789 Operational Avenue\",\r\n  \"companyOpZipCode\": \"54321\",\r\n  \"companyOpCountry\": \"United States\",\r\n  \"companyOpPhone\": \"+1122334455\",\r\n  \"companyOpCity\": \"Operationsville\",\r\n  \"companyOpEmail\": \"operations@abccorp.com\",\r\n  \"companyOpMobile\": \"+1555555555\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/business/update-company-info",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"business",
+												"update-company-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Company Legal Kyc",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTUzMDcxMjAsImV4cCI6MTcxNTM3OTEyMH0.mYgpWml-uuK0mpnvLQnifiWHrcWhwZfL7giNCX9WNKw",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"legalForm\": \"Company Limited by Shares\",\r\n  \"otherLegalForm\":\"Bitcoin\",\r\n  \"docimiliaryDeclaration\": \"[true,false]\",\r\n  \"docimiliaryReason\":\"Bitcoin\",\r\n  \"numberOfEmployees\": \"1-10\",\r\n  \"businessActivity\": \"Retail\",\r\n  \"placeOfBusiness\": \"Brazil\",\r\n  \"annualNetProfit\": \"100000\",\r\n  \"sourceOfFunds\": \"Sales Revenue\",\r\n  \"otherFundsSouce\": \"Investments\",\r\n  \"tradingVolume\": \"High\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3002/kyc/business/update-company-kyc",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"kyc",
+												"business",
+												"update-company-kyc"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Authorized Signatures",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTU1MzQxODYsImV4cCI6MTcxNTYwNjE4Nn0.YFPLPXR-T29-NTwTxtxzkdGjaWIwzAlNudD0MkHAhqw",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"fullName\": \"John Doe\",\r\n  \"address\": \"123 Main Street\",\r\n  \"country\": \"USA\",\r\n  \"nationality\": \"American\",\r\n  \"zipCode\": \"10001\",\r\n  \"roleInCompany\": \"CEO\",  \r\n  \"nationalIdExpiration\": \"2025-12-31T00:00:00.000Z\",\r\n  \"dateOfBirth\": \"1990-01-01T00:00:00.000Z\",\r\n  \"politicallyExposed\": false,\r\n  \"relativeExposed\": true,\r\n  \"signatureType\": true\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/business/update-authorized-signatures",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"business",
+												"update-authorized-signatures"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Contracting Party",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTUzOTg2OTksImV4cCI6MTcxNTQ3MDY5OX0.8BRgeVcXIgAUkhX8yRleoPprbUPK4v3G5fWk9yjRxVU",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"contractingTicks\": \"[true, false, true]\",\r\n  \"cPersonName\": \"John Doe\",\r\n  \"cPersonAddress\": \"123 Main Street\",\r\n  \"cPersonNationality\": \"US\",\r\n  \"cPersonRole\": \"Role 1\",\r\n  \"cSecondPersonName\": \"Jane Smith\",\r\n  \"cSecondPersonAddress\": \"456 Elm Street\",\r\n  \"cSecondPersonNationality\": \"UK\",\r\n  \"cSecondPersonRole\": \"Role 2\",\r\n  \"cThirdPersonName\": \"Alice Johnson\",\r\n  \"cThirdPersonAddress\": \"789 Oak Street\",\r\n  \"cThirdPersonNationality\": \"CA\",\r\n  \"cThirdPersonRole\": \"Role 3\",\r\n  \"relavantInfo\": \"Some relevant information\",\r\n  \"nameOfClient\": \"Client Corp\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/business/update-contracting-party",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"business",
+												"update-contracting-party"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Beneficiary",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTU1MzQxODYsImV4cCI6MTcxNTYwNjE4Nn0.YFPLPXR-T29-NTwTxtxzkdGjaWIwzAlNudD0MkHAhqw",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"userId\": 123,\r\n  \"firstFullName\": \"John Doe\",\r\n  \"firstDateOfBirth\": \"1990-01-01T00:00:00Z\",\r\n  \"firstNationality\": \"US\",\r\n  \"firstAddress\": \"123 Main St\",\r\n  \"firstCity\": \"New York\",\r\n  \"firstZipCode\": 10001,\r\n  \"firstCountry\": \"USA\",\r\n  \"firstPoliticallyExposed\": false,\r\n  \"firstDocumentUrl\": \"https://example.com/document\",\r\n  \"firstDocumentExpiration\": \"2025-01-01T00:00:00Z\",\r\n  \"secondFullName\": \"Jane Smith\",\r\n  \"secondDateOfBirth\": \"1995-01-01T00:00:00Z\",\r\n  \"secondNationality\": \"CA\",\r\n  \"secondAddress\": \"456 Elm St\",\r\n  \"secondCity\": \"Los Angeles\",\r\n  \"secondZipCode\": 90001,\r\n  \"secondCountry\": \"USA\",\r\n  \"secondPoliticallyExposed\": true,\r\n  \"secondDocumentUrl\": \"https://example.com/document2\",\r\n  \"secondDocumentExpiration\": \"2024-12-31T00:00:00Z\",\r\n  \"thirdFullName\": \"Alice Johnson\",\r\n  \"thirdDateOfBirth\": \"1985-01-01T00:00:00Z\",\r\n  \"thirdNationality\": \"GB\",\r\n  \"thirdAddress\": \"789 Oak St\",\r\n  \"thirdCity\": \"London\",\r\n  \"thirdZipCode\": 12345,\r\n  \"thirdCountry\": \"UK\",\r\n  \"thirdPoliticallyExposed\": false,\r\n  \"thirdDocumentUrl\": \"https://example.com/document3\",\r\n  \"thirdDocumentExpiration\": \"2023-12-31T00:00:00Z\",\r\n  \"contractingPartner\": \"Example Corp\",\r\n  \"announceChanges\": true,\r\n  \"created_at\": \"2024-05-12T10:00:00Z\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{UsersApi}}/kyc/business/update-beneficiary",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"business",
+												"update-beneficiary"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Authorized Signatories",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTc1MzAwODQsImV4cCI6MTcxNzYwMjA4NH0.oW8E9ACxmMIz9n0GHAUu9uH-51VJxPlWdOSLRyTVLFk",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{UsersApi}}/kyc/business/authorazed-signatures",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"business",
+												"authorazed-signatures"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get PDF",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTgxMTQ2MDMsImV4cCI6MTcxODE4NjYwM30.aQyDiacDV8zUlpALRYRk9lQufa1u1l-a6FOoU9-g_w8",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{UsersApi}}/kyc/business/test",
+											"host": [
+												"{{UsersApi}}"
+											],
+											"path": [
+												"kyc",
+												"business",
+												"test"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Deposit",
+					"item": [
+						{
+							"name": "Create Deposit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTc2ODY5NjAsImV4cCI6MTcxNzc1ODk2MH0.wLrpgGfgNK6F0EHO8r4zcINrDznXTWiUK_Zhc5To_b8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"eurAmount\": 1000,        \r\n    \"feeRate\": 0.2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{UsersApi}}/deposits/create",
+									"host": [
+										"{{UsersApi}}"
+									],
+									"path": [
+										"deposits",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Deposits",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTc2ODY5NjAsImV4cCI6MTcxNzc1ODk2MH0.wLrpgGfgNK6F0EHO8r4zcINrDznXTWiUK_Zhc5To_b8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{UsersApi}}/deposits/all",
+									"host": [
+										"{{UsersApi}}"
+									],
+									"path": [
+										"deposits",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Deposit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJpYXQiOjE3MTc2ODY5NjAsImV4cCI6MTcxNzc1ODk2MH0.wLrpgGfgNK6F0EHO8r4zcINrDznXTWiUK_Zhc5To_b8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{UsersApi}}/deposits/delete",
+									"host": [
+										"{{UsersApi}}"
+									],
+									"path": [
+										"deposits",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},				
+				{
+					"name": "Wallets",
+					"item": [
+						{
+							"name": "Create-HDWallet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU0ODQ4NjkyLCJleHAiOjE3NTQ5MjA2OTJ9.Eoe70vKuFr-hgGsjGhL-X5hAZcWXqKvTBRajl7OU6ME",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{    \r\n    \"identifier\":\"kenneth.zambrano4@gmail.com\",\r\n    \"password\": \"Kennow2115##\"\r\n}"
+								},
+								"url": {
+									"raw": "localhost:3002/user/generate-hd-wallet",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"user",
+										"generate-hd-wallet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Wallet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU1NTEyMjU3LCJleHAiOjE3NTU1ODQyNTd9.i_z9uywtkuBQlXAMlvLR4L219Ayx15z1zRMEql3bbPw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/user/get-wallet",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"user",
+										"get-wallet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create-User-Wallet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJyb2wiOjIsImlhdCI6MTc1NDg5MzIxOCwiZXhwIjoxNzU0OTY1MjE4fQ.Y2Ufw80Locq4aOMmAkKHlnfwct7qyrve27qcOPCoECU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/user/create-eth-address",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"user",
+										"create-eth-address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sign-Msg",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluZGl2aWR1YWwiLCJpZCI6Mywicm9sIjowLCJpYXQiOjE3NTI4OTIwNzgsImV4cCI6MTc1Mjk2NDA3OH0.VlEek2A-u_bwpSkZ_I2PKNbk_bgKWOAScC6bMyHlyQE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"message\":\"MtPelerin-687ba5f28321a5001250ff8a-2145\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3002/user/sign-message",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"user",
+										"sign-message"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Regenerate-Wallet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm5vdyIsImlkIjoxLCJyb2wiOjIsImlhdCI6MTc1NDg5MzIxOCwiZXhwIjoxNzU0OTY1MjE4fQ.Y2Ufw80Locq4aOMmAkKHlnfwct7qyrve27qcOPCoECU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/user/regenerate-wallet",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"user",
+										"regenerate-wallet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MtPelerin-API-Fetch",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-report-auth",
+										"value": "RyP95ZE2ffyHaZqF8aqK95VD6UbL9R6km2yZUYSy"
+									}
+								],
+								"url": {
+									"raw": "https://api.mtpelerin.com/transactions/merchantReport/4ba61341-9325-45d6-bf96-792684d11959?fromDate=2025-01-01&toDate=2026-01-01&skip=0&limit=100",
+									"protocol": "https",
+									"host": [
+										"api",
+										"mtpelerin",
+										"com"
+									],
+									"path": [
+										"transactions",
+										"merchantReport",
+										"4ba61341-9325-45d6-bf96-792684d11959"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": "2025-01-01"
+										},
+										{
+											"key": "toDate",
+											"value": "2026-01-01"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mock-MtPelerin-Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzUzNTUwNDYxLCJleHAiOjE3NTM2MjI0NjF9.beJqnNrxCLm5Ttun5i8WJXXx9kUjhtSTVn23NlaOx7M",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":2,\r\n    \"eurAmount\": 500,\r\n    \"reference\": \"test mock 1233\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "admin-api.keneth.dev/mtpelerin/mock-create",
+									"host": [
+										"admin-api",
+										"Ken",
+										"codes"
+									],
+									"path": [
+										"mtpelerin",
+										"mock-create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MtPelerin-ApproveTx",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU0ODQ4NjkyLCJleHAiOjE3NTQ5MjA2OTJ9.Eoe70vKuFr-hgGsjGhL-X5hAZcWXqKvTBRajl7OU6ME",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":6\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3005/mtpelerin/approve",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"mtpelerin",
+										"approve"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch-mock-finished",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsInJvbCI6MywiaWF0IjoxNzU2Mjg1MTY5LCJleHAiOjE3NTYzNTcxNjl9.Ft7q2eTWpPvEReSG2e9VRZC0gZ1FppOBgY3CnixcOxo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{AdminApi}}/mtpelerin/fetch-mock-finished",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"mtpelerin",
+										"fetch-mock-finished"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MtPelerin-Deny",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluZGl2aWR1YWwiLCJpZCI6Mywicm9sIjowLCJpYXQiOjE3NTMyMDU1NzUsImV4cCI6MTc1MzI3NzU3NX0.iMNLSonrNr68jAZlXUctm5KDNoIPfJv8Y0T-y3Yk3lk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":3,\r\n    \"message\":\"We cannot operate from your country\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3005/mtpelerin/deny",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"mtpelerin",
+										"deny"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MtPelerin-Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluZGl2aWR1YWwiLCJpZCI6Mywicm9sIjowLCJpYXQiOjE3NTMyMDU1NzUsImV4cCI6MTc1MzI3NzU3NX0.iMNLSonrNr68jAZlXUctm5KDNoIPfJv8Y0T-y3Yk3lk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":3,\r\n    \"message\":\"Please provide a valid id\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3005/mtpelerin/request-info",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"mtpelerin",
+										"request-info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MtPelerin-Get-All",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzUzNTUwNDYxLCJleHAiOjE3NTM2MjI0NjF9.beJqnNrxCLm5Ttun5i8WJXXx9kUjhtSTVn23NlaOx7M",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":3,\r\n    \"message\":\"We need to verify your phone number \"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3005/mtpelerin/all",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"mtpelerin",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single-fetch-MtPelerin-Api",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsInJvbCI6MywiaWF0IjoxNzU2Mjg1MTY5LCJleHAiOjE3NTYzNTcxNjl9.Ft7q2eTWpPvEReSG2e9VRZC0gZ1FppOBgY3CnixcOxo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{AdminApi}}/mtpelerin/fetch-transactions",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"mtpelerin",
+										"fetch-transactions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Welcome",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYm9iIiwiaWQiOjIsImlhdCI6MTcwMDkxMjcwNSwiZXhwIjoxNzAwOTg0NzA1fQ.pKIAzXPCD7SWFk5ppQRXSYy1iedxBeMBwew7iG0eZ_I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UsersApi}}/",
+							"host": [
+								"{{UsersApi}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "KYC status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYnkiLCJpZCI6MSwiaWF0IjoxNzE0MjU5NzU4LCJleHAiOjE3MTQzMzE3NTh9.tbHtmAr2JV2sBftmIaFLjvSV9JpbXxmzhGbYAQ1DAa0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UsersApi}}/kyc/status",
+							"host": [
+								"{{UsersApi}}"
+							],
+							"path": [
+								"kyc",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Get user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3005/users/4 ",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"users",
+										"4 "
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Kyc",
+					"item": [
+						{
+							"name": "Create Review",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":1,\r\n    \"step\":1,\r\n    \"message\":\"Please check company address\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3005/users/create-review",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"users",
+										"create-review"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Review",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":3,\r\n    \"step\":4,\r\n    \"message\":\"message changedsssssss\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3005/users/edit-review",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"users",
+										"edit-review"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Review",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3005/users/delete-review/5",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"users",
+										"delete-review",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Reviews",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3005/users/get-reviews/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"users",
+										"get-reviews",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Config",
+					"item": [
+						{
+							"name": "Create Config",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsInJvbCI6MywiaWF0IjoxNzU0ODk2MjI2LCJleHAiOjE3NTQ5NjgyMjZ9.JZc4tGeFSeEyMISGvtBy3q2hX80lfdky6tbyqcE-oxE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"feeRate\": 2,\r\n  \"email\":\"Ken.cmd32@proton.me\",\r\n  \"colateralRate\": 2,\r\n  \"bankAccount\": \"1234567890\",\r\n  \"keyWord\": \"Ken-codes\",\r\n  \"bankName\": \"Santander\",\r\n  \"bicSwift\": \"ES72\"  \r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://admin-api.keneth.dev/create-config",
+									"protocol": "https",
+									"host": [
+										"admin-api",
+										"Ken",
+										"codes"
+									],
+									"path": [
+										"create-config"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Deposits",
+					"item": [
+						{
+							"name": "Export",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Wallets",
+					"item": [
+						{
+							"name": "Generate-Encryption",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU0ODQ4NjkyLCJleHAiOjE3NTQ5MjA2OTJ9.Eoe70vKuFr-hgGsjGhL-X5hAZcWXqKvTBRajl7OU6ME",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3005/users/generate-encrypted",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"users",
+										"generate-encrypted"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Withdraw",
+					"item": [
+						{
+							"name": "Get Deposit wallet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU1NTEyMjU3LCJleHAiOjE3NTU1ODQyNTd9.i_z9uywtkuBQlXAMlvLR4L219Ayx15z1zRMEql3bbPw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{AdminApi}}/withdraw/deposit-wallet",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"withdraw",
+										"deposit-wallet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users-wallets-info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsInJvbCI6MywiaWF0IjoxNzU2Mjg1MTY5LCJleHAiOjE3NTYzNTcxNjl9.Ft7q2eTWpPvEReSG2e9VRZC0gZ1FppOBgY3CnixcOxo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{AdminApi}}/withdraw/user-wallets",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"withdraw",
+										"user-wallets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-All-Withdrawals",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsInJvbCI6MywiaWF0IjoxNzU1MDI5MjA3LCJleHAiOjE3NTUxMDEyMDd9.dCtPculmb-31G9sBJiaJqp1ceMZgrE7-Al2OI0vJURI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{AdminApi}}/withdraw/withdrawals",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"withdraw",
+										"withdrawals"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Withdraw",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU1NjYzMTk4LCJleHAiOjE3NTU3MzUxOTh9.W1g8ydodKLAAiu0ViCVIzC42BAnWshquftW-h7hQmr0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{AdminApi}}/withdraw/withdraw",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"withdraw",
+										"withdraw"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fund-user-Wallets",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU2MjE5Njg3LCJleHAiOjE3NTYyOTE2ODd9.A8M9AlGNIS_p_u3PIlevEjurZtI3UnQisDF4FGlqDvc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"addresses\":[\"0xA016D9c3D7667b0A1acbDFe93aCa4aF12DeAc357\",\"0x2322Ad8a000599f6D03Fd9c8590b50E697e58B28\"],\r\n    \"createMock\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{AdminApi}}/withdraw/fund-wallets",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"withdraw",
+										"fund-wallets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Withdraw-Queue",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU1MTM0OTEwLCJleHAiOjE3NTUyMDY5MTB9.tajMEKkhk7z-kK1Uj8n9qV5QyV-7kY3TNiws593agNw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":1,\r\n    \"amount\":1000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{AdminApi}}/withdraw/create-withdraw",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"withdraw",
+										"create-withdraw"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "MEXC",
+					"item": [
+						{
+							"name": "Get-balances",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "private readonly mexcService: MexcService",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{AdminApi}}/mexc/get-balances",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"mexc",
+										"get-balances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Redeem-Cron",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsInJvbCI6MywiaWF0IjoxNzU2Mjg1MTY5LCJleHAiOjE3NTYzNTcxNjl9.Ft7q2eTWpPvEReSG2e9VRZC0gZ1FppOBgY3CnixcOxo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{AdminApi}}/redeems/process",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"redeems",
+										"process"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Redeem-Cron-Retry-Fail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "private readonly mexcService: MexcService",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{AdminApi}}/mexc/retry-failed",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"mexc",
+										"retry-failed"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Redeem-Cron-Retry-Fail Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "private readonly mexcService: MexcService",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cryptoCurrency\":\"ETH\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{AdminApi}}/mexc/history",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"mexc",
+										"history"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Redeems",
+					"item": [
+						{
+							"name": "Get-Redeems",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsInJvbCI6MywiaWF0IjoxNzU2MTA3NjQwLCJleHAiOjE3NTYxNzk2NDB9.yjHwInNzwc5lFIGUURg53a1wYv7jWdPr5ufPmlQWEc0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{AdminApi}}/redeems",
+									"host": [
+										"{{AdminApi}}"
+									],
+									"path": [
+										"redeems"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{apikey}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apikey",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYm9iIiwiaWQiOjIsImlhdCI6MTcwMTAwNTIyNSwiZXhwIjoxNzAxMDc3MjI1fQ.XMZj18tvyI8HLZCNQLNQXMq9pR9Juyo_vXRAuPQGsqc",
+			"type": "string"
+		},
+		{
+			"key": "UsersAPI",
+			"value": "localhost:3002",
+			"type": "string"
+		},
+		{
+			"key": "AsteroidsAPI",
+			"value": "localhost:3003",
+			"type": "string"
+		},
+		{
+			"key": "AuthAPI",
+			"value": "localhost:3001",
+			"type": "string"
+		},
+		{
+			"key": "KenDev",
+			"value": " 194.60.87.68"
+		},
+		{
+			"key": "UsersApi",
+			"value": "localhost:3002"
+		},
+		{
+			"key": "localhost:3005",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "adminApi",
+			"value": "localhost:3005",
+			"type": "default"
+		}
+	]
+}

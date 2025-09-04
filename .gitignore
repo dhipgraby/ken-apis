@@ -1,0 +1,64 @@
+.core.122
+.cache/
+.cache*/
+.pki/
+.pki*/
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+.env
+
+/.yarn
+/.yarnrc.yml
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+dev.db
+prisma/dev.db
+/prisma/dev.db
+/prisma/dev.db*
+/prisma/migrations
+# testing
+/coverage
+/db
+/db*
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+/.vscode
+/dist
+/prisma/dev.db
+.webpack
+.serverless/**/*.zip
+package-lock.json
+/prisma/*
+yarn.lock
+# misc
+.DS_Store
+*.pem
+
+/uploads
+/uploads/*
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+ 
