@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { UsersController } from './users.controller';
 import { UsersService } from './services/users.service';
 import { PrismaService } from 'lib/common/database/prisma.service';
@@ -22,9 +23,11 @@ import { SmsService as UserSmsService } from 'apps/auth/src/sms/sms.service';
     TokenService,
     DepositsService,
     BalancesService
-  ],
+  // JwtService is automatically provided by JwtModule
+  ], 
   imports: [
-    TransactionsModule
+  TransactionsModule,
+  JwtModule.register({}) // Add your config here if needed
   ],
 })
 export class UsersModule { }

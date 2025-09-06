@@ -4,11 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AdminModule } from './admin.module';
 import * as dotenv from 'dotenv';
-
-import { createBullBoard } from '@bull-board/api';
-import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { ExpressAdapter } from '@bull-board/express';
-import { getQueueToken } from '@nestjs/bull';
 
 async function bootstrap() {
   dotenv.config();
@@ -35,15 +31,6 @@ async function bootstrap() {
   // ---------------------
   const serverAdapter = new ExpressAdapter();
   serverAdapter.setBasePath('/admin/queues');
-
-  // Get the queue instance from NestJS DI
-  const withdrawalsQueue = app.get(getQueueToken('withdrawals'));
-  const redeemsQueue = app.get(getQueueToken('redeems'));
-
-  createBullBoard({
-    queues: [new BullAdapter(withdrawalsQueue), new BullAdapter(redeemsQueue)],
-    serverAdapter,
-  });
 
   app.use('/admin/queues', serverAdapter.getRouter());
 

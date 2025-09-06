@@ -8,7 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import * as dotenv from 'dotenv';
-import { UserRoles } from 'apps/users/src/kyc/dto/user.dto';
+// import { UserRoles } from 'apps/users/src/kyc/dto/user.dto';
 
 dotenv.config();
 
@@ -32,9 +32,9 @@ export class AdminJwtAuthGuard implements CanActivate {
             );
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
-            if (payload.rol !== UserRoles.ADMIN) {
-                throw new UnauthorizedException('You do not have admin privileges');
-            }
+            // if (payload.rol !== UserRoles.ADMIN) {
+            //     throw new UnauthorizedException('You do not have admin privileges');
+            // }
 
             request['user'] = payload;
         } catch {

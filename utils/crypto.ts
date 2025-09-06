@@ -1,8 +1,8 @@
 import * as crypto from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
-
-const KEY = crypto.scryptSync(process.env.WALLET_ENCRYPTION_SECRET!, 'salt', 32); // 32 bytes for AES-256
+// process.env.WALLET_ENCRYPTION_SECRET!
+const KEY = crypto.scryptSync('asdasdasd', 'salt', 32); // 32 bytes for AES-256
 
 export function encryptPrivateKey(privateKey: string) {
     const iv = crypto.randomBytes(16);

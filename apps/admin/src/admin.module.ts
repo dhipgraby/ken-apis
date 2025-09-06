@@ -13,7 +13,6 @@ import { UsersModule } from './users/users.module';
 import { UsersService as internalUsersService } from './users/users.service';
 import { BalancesService } from 'lib/common/services/balances.service';
 import { SmsService } from 'apps/auth/src/sms/sms.service';
-import { MtPelerinController } from './users/mtpelerin/mtpelerin.controller';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WithdrawController } from './users/transactions/controllers/withdraw.controller';
 import { WithdrawService } from './users/transactions/services/withdraw.service';
@@ -32,7 +31,6 @@ import { WithdrawService } from './users/transactions/services/withdraw.service'
     AdminController,
     UsersController,
     DepositsController,
-    MtPelerinController,    
     WithdrawController
   ],
   providers: [

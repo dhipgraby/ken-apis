@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common/enums';
 import { Injectable } from '@nestjs/common';
 import { User, Prisma } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
+import { GoogleAuthDto, LoginUserDto } from './dto/login-user.dto';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'lib/common/database/prisma.service';
@@ -15,6 +15,9 @@ import {
   EmailActions,
   EmailActionType,
 } from './dto/reset-password.dto';
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 @Injectable()
 export class UserService {
@@ -78,11 +81,22 @@ export class UserService {
   }
 
 
-  // async googleAuth(googleAuthDto: GoogleAuthDto) {
-  //   const { googleTokenId } = googleAuthDto;
+  async googleAuth(googleAuthDto: GoogleAuthDto) {
+    const { googleTokenId } = googleAuthDto;
 
+    const ticket = await client.verifyIdToken({
+      idToken: googleTokenId,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-  // }
+    const payload = ticket.getPayload();
+    if (!payload) {
+      throw new HttpException('Invalid Google token', HttpStatus.FORBIDDEN);
+    }
+
+    console.log('Google payload:', payload);
+    return { status: 200, message: 'Google auth successful', payload }
+  }
 
   async login(userLoginObject: LoginUserDto) {
     const { identifier, password, code, smsCode } = userLoginObject;

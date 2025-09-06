@@ -1,12 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
-import { CoreService } from 'apps/users/src/core/core.service';
 import { CreateDepositDto, DepositMessageDto } from '../dto/transactions/transactions.dto';
 import { DepositStatus } from '../types/deposit.types';
 import { UserStatus } from '../types/user.types';
 import { Prisma } from '@prisma/client';
 import { Workbook } from 'exceljs';
-import { UserRoles } from 'apps/users/src/kyc/dto/user.dto';
 import { calculateDaiAmount, fetchConversionRate } from 'utils/colateral.calculation';
 import { sendDepositDenialEmail, sendDepositRequestEmail, sendDepositApprovalEmail } from 'lib/mail/mail';
 
@@ -14,7 +12,6 @@ import { sendDepositDenialEmail, sendDepositRequestEmail, sendDepositApprovalEma
 export class DepositsService {
     constructor(
         private prisma: PrismaService,
-        private coreService: CoreService,
     ) { }
 
     async approveDeposit(depositId: number) {
@@ -74,105 +71,6 @@ export class DepositsService {
         };
     }
 
-    async createDeposit(depositData: CreateDepositDto, userId: number) {
-        // Validate user
-        const user = await this.coreService.userValidation(userId);
-
-        if (user.userStatus !== UserStatus.VERIFIED) {
-            throw new HttpException('User is not verified', HttpStatus.FORBIDDEN);
-        }
-
-        if (user.rol === UserRoles.INDIVIDUAL) {
-            await this.coreService.verifyIndividualIdExpiration(user);
-        }
-
-        if (user.rol === UserRoles.BUSINESS) {
-            await this.coreService.verifyBusinessIdExpiration(user);
-        }
-
-        // Check if user already has an active deposit
-        const activeDeposit = await this.prisma.deposits.findFirst({
-            where: {
-                userId: user.id,
-                OR: [
-                    { depositStatus: DepositStatus.PROCESSING },
-                    { depositStatus: DepositStatus.REQUEST },
-                ],
-            },
-        });
-
-        if (activeDeposit) {
-            throw new HttpException('User already has an active deposit or deposit in request status.', HttpStatus.CONFLICT);
-        }
-
-        // Retrieve admin configuration
-        const adminConfig = await this.prisma.adminConfig.findFirst({});
-        const vendorsConfig = await this.prisma.vendorsConfig.findUnique({ where: { userId: user.id } });
-
-        if (!adminConfig) {
-            throw new HttpException('Admin configuration not found. Please contact support.', HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        // Validate deposit data
-        if (!depositData.eurAmount || depositData.eurAmount <= 0) {
-            throw new HttpException('Invalid deposit amount', HttpStatus.BAD_REQUEST);
-        }
-
-        const userBalance = await this.prisma.balances.findUnique({
-            where: {
-                userId: userId
-            }
-        });
-
-        if (!userBalance) {
-            //CREATING USER BALANCE 
-            await this.prisma.balances.upsert({
-                where: { userId: userId },
-                create: {
-                    userId: userId,
-                    eur: 0,
-                    usd: 0,
-                    daiColateral: 0
-                },
-                update: {
-                    last_modified: new Date().toISOString(),
-                },
-            });
-        }
-
-        const customFeeRate = user.rol === UserRoles.BUSINESS
-            ? (vendorsConfig.businessFeeRate ?? adminConfig.feeRate)
-            : (vendorsConfig.feeRate ?? adminConfig.feeRate);
-
-        const bankAccount = vendorsConfig.bankAccount || adminConfig.bankAccount
-
-        // Create new deposit
-        try {
-            await this.prisma.deposits.create({
-                data: {
-                    userId: user.id,
-                    userRole: user.rol,
-                    depositStatus: DepositStatus.PROCESSING,
-                    eurAmount: depositData.eurAmount,
-                    feeRate: customFeeRate,
-                    isApproved: false,
-                    keyWord: vendorsConfig.keyWord || adminConfig.keyWord,
-                    method: 'Bank-transfer - Bank name: ' + vendorsConfig.bankName || adminConfig.bankName,
-                    account: "BicSwift: " + (vendorsConfig.bicSwift || adminConfig.bicSwift) + " - Account: " + bankAccount,
-                    created_at: new Date(),
-                },
-            });
-
-            return {
-                status: HttpStatus.OK,
-                message: "New deposit request created.",
-            };
-        } catch (error) {
-            console.error('Error creating deposit:', error);
-            throw new HttpException('Error creating deposit', HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     async getUserDeposits(
         userId: number,
         page = 1,
@@ -180,7 +78,7 @@ export class DepositsService {
         filters?: Prisma.DepositsWhereInput,
         orderBy: 'desc' | 'asc' = 'desc',
     ) {
-        await this.coreService.userValidation(userId);
+        await this.prisma.user.findUnique({ where: { id: userId } });
         if (page < 1) page = 1;
         const offset = (page - 1) * limit;
 
@@ -375,8 +273,6 @@ export class DepositsService {
                 ...deposit,
                 depositStatus: this.getDepositStatusText(deposit.depositStatus as DepositStatus),
             };
-
-            if (!userId) formattedDeposit.userRole = this.getUserRole(deposit.userRole as UserRoles);
             if (addUser) formattedDeposit.userId = deposit.userId;
 
             worksheet.addRow(formattedDeposit);
@@ -388,21 +284,9 @@ export class DepositsService {
         const numberOfColumns = worksheet.columns.length;
 
         if (userId) {
-            const user = await this.coreService.userValidation(userId);
-            let userText: string;
-            if (user.rol === UserRoles.INDIVIDUAL) {
-                const userInfo = await this.prisma.personalInformation.findUnique({
-                    where: { userId }
-                });
-                userText = "User : " + userInfo.firstName + " " + userInfo.lastName;
-            }
 
-            if (user.rol === UserRoles.BUSINESS) {
-                const companyInfo = await this.prisma.businessCompanyInfo.findUnique({
-                    where: { userId }
-                });
-                userText = "Company : " + companyInfo.companyName;
-            }
+            let userText: string;
+
             const userRow = new Array(numberOfColumns).fill('');
             userRow[0] = userText;
             worksheet.addRow([]);
@@ -444,27 +328,11 @@ export class DepositsService {
                 return 'Unknown Status';
         }
     }
-
-    getUserRole(role: UserRoles): string {
-        switch (role) {
-            case UserRoles.NO_ROLE:
-                return 'No role';
-            case UserRoles.INDIVIDUAL:
-                return 'Individual';
-            case UserRoles.BUSINESS:
-                return 'Business';
-            default:
-                return 'Unknown Status';
-        }
-    }
-
     async deleteUserDeposit(userId: number, depositId: number) {
         // Validate user
-        await this.coreService.userValidation(userId);
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
 
-        const user = await this.coreService.getUser(userId);
-
-        if (user.userStatus !== 1) {
+        if (!user || user.userStatus !== 1) {
             throw new HttpException('User is not verified', HttpStatus.FORBIDDEN);
         }
 

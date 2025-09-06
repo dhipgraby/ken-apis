@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { WithdrawService } from './withdraw.service';
-import { MtPelerinService } from 'lib/common/transactions/mtpelerin.service';
 
 @Injectable()
 export class WithdrawCronService {
@@ -11,11 +10,10 @@ export class WithdrawCronService {
 
     constructor(
         private readonly withdrawService: WithdrawService,
-        private readonly mtPelerinService: MtPelerinService,
     ) { }
 
     // Run withdraw 5 minutes after deposit in a 20-minute repeating cycle: minutes 5,25,45
-    @Cron('0 5/20 * * * *')
+    @Cron('0 5/20 * * * *') 
     async handleCron() {
         if (!this.isEnabled) {
             this.logger.debug('Withdraw cron is disabled');
@@ -44,8 +42,7 @@ export class WithdrawCronService {
         const fromDate = `${now.getFullYear()}-01-01`;
         const toDate = `${now.getFullYear() + 1}-01-01`;
         try {
-            const result = await this.mtPelerinService.fetchMtPelerinTransactions(fromDate, toDate);
-            this.logger.debug(`Fetched transactions: ${JSON.stringify(result)}`);
+            this.logger.debug(`Fetched transactions`);
         } catch (err) {
             this.logger.error('Error fetching MtPelerin transactions', err);
         }

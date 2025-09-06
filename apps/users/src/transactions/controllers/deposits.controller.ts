@@ -23,15 +23,6 @@ export class DepositsController {
     private readonly depositsService: DepositsService,
   ) { }
 
-  @Post('create')
-  async createDeposit(
-    @Request() req,
-    @Body() createDepositDto: CreateDepositDto,
-  ) {
-    const userId = req.user.id;
-    return await this.depositsService.createDeposit(createDepositDto, userId);
-  }
-
   @Get('all')
   async getDeposits(
     @Request() req,

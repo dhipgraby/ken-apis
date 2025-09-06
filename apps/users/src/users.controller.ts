@@ -12,7 +12,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'lib/common/auth/jwt-auth.guard';
 import { BalancesService } from 'lib/common/services/balances.service';
-import { VendorsConfigDto } from './userDto/user.dto';
 
 @ApiBearerAuth()
 @ApiTags('User Profile')

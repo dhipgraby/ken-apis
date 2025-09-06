@@ -3,7 +3,6 @@ import { PrismaService } from 'lib/common/database/prisma.service';
 import { UserService } from 'apps/auth/src/users/users.service';
 import { UserStatus } from 'lib/common/types/user.types';
 import { Prisma } from '@prisma/client';
-import { UserRoles } from 'apps/users/src/kyc/dto/user.dto';
 import { VendorsConfigDto } from './dto/settings.dto';
 import {
   sendAccountApprovalEmail,
@@ -103,42 +102,13 @@ export class UsersService {
           daiColateral: userBalance.daiColateral,
         };
 
-      const userConfig = await this.getVendorsConfig(user);
-      userConfig['rol'] = user.rol;
-      user['config'] = userConfig;
+
       return user;
     } catch (error) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
   }
 
-  async getVendorsConfig(user: any) {
-    try {
-      // Retrieve user configuration from the database
-      const vendorsConfig = await this.prisma.vendorsConfig.findUnique({
-        where: { userId: user.id },
-      });
-
-      if (!vendorsConfig) {
-        throw new HttpException(
-          'User configuration not found',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      return vendorsConfig;
-    } catch (error) {
-      console.error('Error retrieving user configuration:', error);
-      if (error instanceof HttpException) {
-        throw error;
-      } else {
-        throw new HttpException(
-          'Internal server error',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
-  }
 
   async editUserConfig(userId: number, vendorsConfigDto: VendorsConfigDto) {
     try {
@@ -154,16 +124,6 @@ export class UsersService {
         bicSwift: vendorsConfigDto.bicSwift,
         last_modified: new Date().toISOString(),
       };
-
-      if (user.rol === UserRoles.INDIVIDUAL)
-        data['feeRate'] = vendorsConfigDto.feeRate;
-      if (user.rol === UserRoles.BUSINESS)
-        data['businessFeeRate'] = vendorsConfigDto.businessFeeRate;
-
-      await this.prisma.vendorsConfig.update({
-        where: { userId },
-        data: data,
-      });
 
       return {
         message: 'User configuration updated successfully',
@@ -196,16 +156,6 @@ export class UsersService {
         last_modified: new Date().toISOString(),
       };
 
-      if (user.rol === UserRoles.INDIVIDUAL)
-        data['feeRate'] = vendorsConfigDto.feeRate;
-      if (user.rol === UserRoles.BUSINESS)
-        data['businessFeeRate'] = vendorsConfigDto.businessFeeRate;
-
-      await this.prisma.vendorsConfig.update({
-        where: { userId },
-        data: data,
-      });
-
       return {
         message: 'User configuration updated successfully',
         status: HttpStatus.OK,
@@ -224,16 +174,7 @@ export class UsersService {
   }
 
   async approve(userId: number) {
-    // Retrieve admin configuration
-
-    const adminConfig = await this.prisma.adminConfig.findFirst({});
-    if (!adminConfig) {
-      throw new HttpException(
-        'Admin configuration not found. Please contact support.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-
+    // Retrieve admin configuration 
     try {
       const user = await this.prisma.user.findUnique({ where: { id: userId } });
       if (!user)

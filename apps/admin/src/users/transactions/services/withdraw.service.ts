@@ -6,10 +6,6 @@ import { decryptPrivateKey } from 'utils/crypto';
 import { Prisma } from '@prisma/client';
 import { getWithdrawTemplate } from 'lib/mail/templates/admin';
 import { adminWithdrawEmail } from 'lib/mail/mail';
-import { WithdrawStatus } from 'lib/common/dto/transactions/transactions.dto';
-import { DepositStatus } from 'lib/common/types/deposit.types';
-import { fetchConversionDaiRate } from 'utils/colateral.calculation';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class WithdrawService {
@@ -93,50 +89,10 @@ export class WithdrawService {
                 const receipt = await tx.wait();
                 console.log(` - Funding confirmed in block ${receipt.blockNumber}`);
                 const user = await this.prisma.userEthAddresses.findFirst({ where: { address } });
-                if (createMock) await this.addMockFinishedTransaction(user.userId, address, tx.hash);
             } catch (error) {
                 console.error(`❌ Send transaction failed for ${address}: ${error.message}`);
                 throw error;
             }
-        }
-    }
-
-    async addMockFinishedTransaction(userId: number, address: string, txId: string) {
-
-        const mtPelerinMockId = uuidv4()
-        let daiEuroRate = await fetchConversionDaiRate('EUR');
-        // DAI colateral = same as USDC after fee (first numbers 10 are 10USDC and third 2 is feerate)
-        const daiColateral = 10 - (10 * (2 / 100)); // 1:1 with USDC
-        const eurAmount = daiColateral / daiEuroRate;
-
-        try {
-            const newTx = await this.prisma.mtPelerin.create({
-                data: {
-                    mtId: mtPelerinMockId,
-                    userId: userId,
-                    merchant_oid: address,
-                    depositStatus: DepositStatus.PROCESSING,
-                    mtpelerinStatus: 'finished',
-                    paidAmount: eurAmount.toString(),
-                    eurAmount: eurAmount,
-                    daiColateral: daiColateral,
-                    usdcAmount: daiColateral,
-                    feeRate: 2,
-                    currency: 'EUR',
-                    txId: txId,
-                    created_at: new Date(),
-                },
-            });
-
-            if (newTx.id) {
-                return { message: 'New mock tx added', status: 200 }
-            } else {
-                return { message: 'error adding mock tx', status: HttpStatus.BAD_REQUEST }
-            }
-
-        } catch (error) {
-            console.log('error---->', error);
-            throw new HttpException('Failed adding mock mt pelerin tx', HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -184,10 +140,7 @@ export class WithdrawService {
     }
 
     async getUserWallets() {
-        const uniqueWallets = await this.prisma.mtPelerin.findMany({
-            select: { merchant_oid: true },
-            distinct: ['merchant_oid'],
-        });
+        const uniqueWallets = []
         const addresses = uniqueWallets.map(w => w.merchant_oid);
 
         let totalWallets = 0;
@@ -236,13 +189,7 @@ export class WithdrawService {
     }
 
     async getUniqueMerchantWallets(): Promise<string[]> {
-        const uniqueWallets = await this.prisma.mtPelerin.findMany({
-            select: { merchant_oid: true },
-            distinct: ['merchant_oid'],
-        });
-        const addresses = uniqueWallets.map(w => w.merchant_oid);
-        console.log(`[${new Date().toISOString()}] Found ${addresses.length} unique merchant wallets`);
-        return addresses;
+        return [];
     }
 
     async getEffectiveGasPrice(): Promise<bigint> {
@@ -427,7 +374,7 @@ export class WithdrawService {
                     data: {
                         userId: user.userId,
                         address,
-                        fundStatus: WithdrawStatus.Completed,
+                        fundStatus: 1,
                         amount: parseFloat(ethers.formatEther(amount)),
                         currency: 'ETH', // Corrected from 'USDC'
                         feeAmount: Number(feeAmount),
@@ -526,7 +473,7 @@ export class WithdrawService {
                 data: {
                     userId: userAddr.userId,
                     address,
-                    withdrawStatus: WithdrawStatus.Completed, // Use enum instead of hardcoded value
+                    withdrawStatus: 1, // Use enum instead of hardcoded value
                     amount: Number(ethers.formatUnits(usdcBalance, 6)), // USDC has 6 decimals
                     currency: 'USDC',
                     feeAmount: Number(feeAmount),
@@ -596,10 +543,10 @@ export class WithdrawService {
         const adminEmail = process.env.ADMIN_EMAIL || "Ken.cmd32@proton.me"; // Configure in .env
 
         // Categorize withdrawals
-        const successfulFunds = funding.filter(j => j.fundStatus === WithdrawStatus.Completed);
-        const failedFunds = funding.filter(j => j.fundStatus === WithdrawStatus.Failed);
-        const successWithdrawals = withdrawals.filter(j => j.withdrawStatus === WithdrawStatus.Completed);
-        const failedWithdrawals = withdrawals.filter(j => j.withdrawStatus === WithdrawStatus.Failed);
+        const successfulFunds = funding.filter(j => j.fundStatus === 1);
+        const failedFunds = funding.filter(j => j.fundStatus === 2);
+        const successWithdrawals = withdrawals.filter(j => j.withdrawStatus === 1);
+        const failedWithdrawals = withdrawals.filter(j => j.withdrawStatus === 2);
 
 
         // Resume data
