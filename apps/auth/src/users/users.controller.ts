@@ -38,9 +38,7 @@ export class UsersController {
   }
 
   @Post('google')
-  googleAuth(@Body() googleAuthDto: GoogleAuthDto) {
-    console.log('googleAuthDto', googleAuthDto);
-
+  googleAuth(@Body() googleAuthDto: GoogleAuthDto) {    
     return this.usersService.googleAuth(googleAuthDto);
   }
 

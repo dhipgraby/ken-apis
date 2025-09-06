@@ -90,12 +90,34 @@ export class UserService {
     });
 
     const payload = ticket.getPayload();
-    if (!payload) {
+    if (!payload || !payload.email) {
       throw new HttpException('Invalid Google token', HttpStatus.FORBIDDEN);
     }
 
-    console.log('Google payload:', payload);
-    return { status: 200, message: 'Google auth successful', payload }
+    const userEmail = payload.email;
+
+    let findUser = await this.prisma.user.findUnique({
+      where: { email: userEmail },
+    });
+    if (!findUser) {
+      const randomPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = await hash(randomPassword, 10);
+
+      findUser = await this.prisma.user.create({
+        data: {
+          email: userEmail,
+          password: hashedPassword,
+          username: payload.name || userEmail.split('@')[0],
+        },
+      });
+    }
+
+    await this.prisma.user.update({
+      where: { id: findUser.id },
+      data: { last_login: new Date().toISOString() },
+    });
+
+    return this.findOne({ id: findUser.id });
   }
 
   async login(userLoginObject: LoginUserDto) {
