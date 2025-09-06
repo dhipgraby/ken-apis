@@ -14,3 +14,10 @@ export class LoginUserDto {
   @IsOptional()
   smsCode: string;
 }
+
+
+export class GoogleAuthDto {
+  @MinLength(8)
+  @IsNotEmpty()
+  googleTokenId: string;
+}

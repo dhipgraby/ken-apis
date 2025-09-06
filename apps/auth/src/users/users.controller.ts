@@ -11,7 +11,7 @@ import { UserService } from './users.service';
 import { EmailService } from '../email/email.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
+import { GoogleAuthDto, googleAuthDto, LoginUserDto } from './dto/login-user.dto';
 import {
   ResetPasswordDto,
   ConfirmResetPasswordDto,
@@ -36,6 +36,11 @@ export class UsersController {
   login(@Body() loginUserDto: LoginUserDto) {
     return this.usersService.login(loginUserDto);
   }
+
+  // @Post('google')
+  // googleAuth(@Body() googleAuthDto: GoogleAuthDto) {
+  //   return this.usersService.googleAuth(googleAuthDto);
+  // }
 
   @Post('admin-login')
   adminLogin(@Body() loginUserDto: LoginUserDto) {

@@ -77,6 +77,13 @@ export class UserService {
     }
   }
 
+
+  // async googleAuth(googleAuthDto: GoogleAuthDto) {
+  //   const { googleTokenId } = googleAuthDto;
+
+
+  // }
+
   async login(userLoginObject: LoginUserDto) {
     const { identifier, password, code, smsCode } = userLoginObject;
 
