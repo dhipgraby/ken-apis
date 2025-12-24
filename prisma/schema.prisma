@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int           @id @default(autoincrement())
+  email              String        @unique
+  username           String        @unique
+  email_verified     DateTime?
+  password           String
+  role               Int           @default(0)
+  userStatus         Int           @default(0)
+  last_login         DateTime      @default(now())
+  last_modified      DateTime      @default(now())
+  created_at         DateTime      @default(now())
+  isTwoFactorEnabled Boolean       @default(false)
+  // Relations
+  userInfo           UserInfo?
+}
+
+model UserInfo {
+  id                 Int      @id @default(autoincrement())
+  userId             Int      @unique
+  first_name         String
+  last_name          String
+  job_type           Int      @default(0)
+  job_title          String?
+  leaves_entitled_to Int      @default(0)
+  country            String?
+  logoUrl            String?
+  line_manager       String?
+  last_modified      DateTime @default(now())
+  created_at         DateTime @default(now())
+  // Relations
+  user               User     @relation(fields: [userId], references: [id])
+}
+
+model EmailCode {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  email      String   @unique
+  action     String
+  created_at DateTime @default(now())
+  expires_at DateTime
+  is_used    Boolean  @default(false)
+}
+
+model TwoFactorCode {
+  id         String   @id @default(cuid())
+  code       Int
+  email      String
+  action     String
+  created_at DateTime @default(now())
+  expires_at DateTime
+  is_used    Boolean  @default(false)
+}
