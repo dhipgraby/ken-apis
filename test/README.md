@@ -46,37 +46,35 @@ before stopping its owned database. **It is not a persistent development server:
 after completion there are no live API URLs. Private recovery metadata and build
 logs are retained at the printed path.
 
-## Manual use
+## Interactive session: one command
 
-For an interactive session, use the same prepared, environment-file-free setup,
-but provision a separate **fresh, empty local database you own**. Do not reuse an
-existing database or the automated runner's already-removed database. In each
-terminal supply its `DATABASE_URL`, the same synthetic `JWT_SECRET`, and
-`LOCAL_MODE=true`; leave production settings unset. From `ken-apis`, explicitly
-apply migrations before startup:
+After completing the prerequisites above, run from `ken-apis`:
 
 ```bash
-pnpm exec prisma migrate deploy
+pnpm run dev:local
 ```
 
-Then run one existing script per terminal:
+`scripts/dev-local.cjs` creates its own fresh, empty PostgreSQL database, applies
+migrations, seeds one fake local admin, builds all three APIs once, and keeps
+them running in the foreground. **There is no watcher.** No installation,
+generation, image pull or automated test run occurs; `pnpm run test:local` remains
+separate. Unset `DATABASE_URL`, `PROD=true` and `NODE_ENV=production` first.
 
-```bash
-pnpm run dev-auth
-pnpm run dev-users
-pnpm run dev-admin
-```
+All listeners bind to `127.0.0.1` on newly allocated ports. The launcher prints
+three Swagger URLs only after their owned processes report post-listen readiness;
+each also exposes `/documentation-json`. Auth sets its own verification-link
+origin. No existing listener is probed or reused.
 
-Local mode binds to `127.0.0.1`. Auth/users/admin default to ports 3001/3002/3003;
-`AUTH_PORT`, `USERS_PORT` and `ADMIN_PORT` override them. Each API exposes
-`/documentation` and `/documentation-json`. Set `AUTH_BASE_URL` to the auth
-loopback origin if changing its port (default `http://127.0.0.1:3001`). Local mode
-is rejected with `PROD=true` or `NODE_ENV=production`.
+Private logs, metadata, network audit and the shared `outbox` are retained under
+`.local/session-<nonce>` (directory mode `0700`, private JSON mode `0600`). Read
+the printed `admin-credentials.json` path for the synthetic admin login; the
+password is not printed. This fixture is not a public signup privilege or a
+production admin bootstrap. No real Resend key or Google ID is supplied.
 
 1. Use Auth Swagger to submit standard password signup. The account starts at
    status `0` (pending), not as an admin.
-2. Read the captured JSON file's `text` field in `LOCAL_MAIL_DIR` (default
-   `.local/mail` relative to the API working directory). Open its verification
+2. Read the captured JSON file's `text` field in the printed session `outbox`.
+   Open its verification
    URL: `GET /auth/verify?token=...`. A valid code changes pending status `0` to
    active status `1`.
 3. Log in and use the returned bearer token for protected Auth `/auth/user` and
@@ -90,8 +88,24 @@ access is not part of this isolated workflow.
 
 Mail is disabled by default outside local mode. Real Resend delivery requires
 explicit `MAIL_TRANSPORT=resend`, `RESEND_API_KEY` and `EMAIL_FROM`; it is not used
-here. Stop manually started APIs yourself and retire only your owned disposable
-database after use.
+here.
+
+**Stop with Ctrl+C** (or SIGTERM): the supervisor recovers only registered owned
+API process groups and discards only its fresh database. The private outbox and
+metadata remain on disk. An unexpected API exit also stops the session and fails
+rather than leaving a partially live stack.
+
+For another terminal or handoff recovery, use the exact absolute command printed
+at startup (including the Node executable and launcher path):
+
+```bash
+node scripts/dev-local.cjs --stop /absolute/path/to/ken-apis/.local/session-<nonce>
+```
+
+The stop command validates private metadata, project identity, registry and
+container ownership. A live supervisor receives a private stop request; recovery
+uses the existing identity-checked helper if that supervisor is absent. Unknown
+identities fail closed; a cleanup failure requires inspection, not bulk deletion.
 
 ## Recovery and limits
 

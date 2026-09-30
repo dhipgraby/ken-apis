@@ -12,6 +12,7 @@
     "start-auth": "nest start auth",
     "start-users": "nest start users",
     "start-admin": "nest start admin",
+    "dev:local": "node scripts/dev-local.cjs",
     "dev-auth": "nest start auth --watch",
     "dev-users": "nest start users --watch",
     "dev-admin": "nest start admin --watch",

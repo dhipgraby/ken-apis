@@ -214,7 +214,7 @@ pnpm run test
 
 Use `/documentation` and `/documentation-json` on each running API's URL from
 the table above. Manual signup and verification steps are in the
-[local runbook](test/README.md#manual-use).
+[local runbook](test/README.md#interactive-session-one-command).
 
 ## Troubleshooting (Windows)
 
