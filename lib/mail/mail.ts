@@ -1,11 +1,5 @@
-import { Resend } from "resend";
-import * as dotenv from 'dotenv';
 import { HttpException, HttpStatus } from "@nestjs/common";
-dotenv.config();
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-const domain = process.env.PROD === "true" ? process.env.WEBSITE : `http://localhost:3030`;
-const emailFrom = process.env.PROD === "true" ? process.env.EMAIL_FROM : `onboarding@resend.dev`;
+import { deliverMail, localVerificationUrl, mailTransport } from './transport';
 
 const emailFooter = `<br/>
   <small>
@@ -19,6 +13,11 @@ export const sendVerificationEmail = async (
   action: string
 ) => {
   try {
+    const local = mailTransport() === 'local';
+    const domain = process.env.PROD === 'true' ? process.env.WEBSITE : 'http://localhost:3030';
+    const text = action === 'email_verification' && local
+      ? `Confirm your email: ${localVerificationUrl(token)}`
+      : `Your ${action === 'set_password' ? 'password setup' : 'password reset'} code: ${token}`;
     let subject;
     let htmlContent;
     if (action === 'email_verification') {
@@ -55,16 +54,14 @@ export const sendVerificationEmail = async (
       throw new HttpException("Email action not allowed", HttpStatus.BAD_REQUEST);
     }
 
-    const sending = await resend.emails.send({
-      from: `GoZero Calculator <${emailFrom}>`,
+    await deliverMail({
+      senderName: 'GoZero Calculator',
       to: email,
-      subject: subject,
-      html: htmlContent
+      subject,
+      text,
+      html: htmlContent,
     });
-
-    console.log('Verification email sent to: ', email);
-    if (sending.error !== null) throw new HttpException(`Error sending email to: ${email}`, HttpStatus.BAD_REQUEST)
-  } catch (error) {
-    throw new HttpException(`Error sending email to: ${email}`, HttpStatus.BAD_REQUEST)
+  } catch {
+    throw new HttpException('Error sending email', HttpStatus.BAD_REQUEST);
   }
 };

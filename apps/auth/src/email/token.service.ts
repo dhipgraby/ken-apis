@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'lib/common/database/prisma.service';
+import { Prisma } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { sendVerificationEmail } from 'lib/mail/mail';
 import { EmailActionType, EmailActions } from '../users/dto/reset-password.dto';
@@ -10,14 +11,20 @@ export class TokenService {
   constructor(private readonly prisma: PrismaService) {}
 
   //GENERATE EMAIL CODE IN DB
-  generateVerificationToken = async (email: string, action: string) => {
+  generateVerificationToken = async (
+    email: string,
+    action: string,
+    transaction: Prisma.TransactionClient = this.prisma,
+  ) => {
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + SIGNUP_EMAIL_EXPIRATION); //One hour expiration
 
-    const existingToken = await this.getVerificationTokenByEmail(email, action);
+    const existingToken = await transaction.emailCode.findFirst({
+      where: { email, action },
+    });
 
     if (existingToken) {
-      await this.prisma.emailCode.delete({
+      await transaction.emailCode.delete({
         where: {
           id: existingToken.id,
           action: action,
@@ -25,7 +32,7 @@ export class TokenService {
       });
     }
 
-    const verficationToken = await this.prisma.emailCode.create({
+    const verficationToken = await transaction.emailCode.create({
       data: {
         email: email,
         code: token,

@@ -1,45 +1,47 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { LoginModule } from './auth.module';
-// import * as fs from 'fs';
 import * as dotenv from 'dotenv';
+import { announceReady, runtimeOptions } from 'lib/common/config/local-runtime';
 
 async function bootstrap() {
-  dotenv.config();
+  let app: INestApplication | undefined;
+  try {
+    dotenv.config();
+    const options = runtimeOptions('auth');
+    // Let bootstrap handle failures without Nest logging configuration secrets.
+    app = await NestFactory.create(LoginModule, { abortOnError: false, logger: false });
+    app.enableShutdownHooks(['SIGINT', 'SIGTERM']);
 
-  const port = 3001;
-
-  //eslint-disable-next-line
-  // const httpsOptions =
-  //   process.env.PROD === 'true'
-  //     ? {
-  //         key: fs.readFileSync('/root/ssl/key.pem'),
-  //         cert: fs.readFileSync('/root/ssl/cert.pem'),
-  //       }
-  //     : {};
-
-  if (process.env.PROD === 'true') console.log('running PROD');
-
-  const app = await NestFactory.create(LoginModule, {
-    // httpsOptions,
-  });
-
-  const config = new DocumentBuilder()
-    .addBearerAuth()
-    .setTitle('Authentication API')
-    .setDescription(
-      'Auth, user registration, login flows, password reset and email verification',
-    )
-    .setVersion('1.1')
-    .addTag('Auth', 'Authentication & user account operations')
-    .addTag('Root', 'Base endpoints / health checks')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('documentation', app, document);
-  app.useGlobalPipes(new ValidationPipe());
-  app.enableCors();
-  console.log('AUTHENTICATION API RUNNING ON PORT: ' + port);
-  await app.listen(port);
+    const config = new DocumentBuilder()
+      .addBearerAuth()
+      .setTitle('Authentication API')
+      .setDescription(
+        'Auth, user registration, login flows, password reset and email verification',
+      )
+      .setVersion('1.1')
+      .addTag('Auth', 'Authentication & user account operations')
+      .addTag('Root', 'Base endpoints / health checks')
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('documentation', app, document);
+    app.useGlobalPipes(new ValidationPipe());
+    app.enableCors();
+    await app.listen(options.port, options.host);
+    const url = await app.getUrl();
+    if (options.local) process.env.AUTH_BASE_URL = url;
+    announceReady('auth', url, options.local);
+  } catch {
+    process.exitCode = 1;
+    console.error('Authentication API startup failed');
+    if (app) {
+      try {
+        await app.close();
+      } catch {
+        console.error('Authentication API shutdown failed');
+      }
+    }
+  }
 }
-bootstrap();
+void bootstrap();

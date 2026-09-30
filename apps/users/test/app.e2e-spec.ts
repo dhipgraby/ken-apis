@@ -1,24 +1,29 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UsersModule } from './../src/users.module';
+import { UsersModule } from '../src/users.module';
+import { currentAccountCases, fixture } from '../../../test/e2e.helpers';
 
-describe('UsersController (e2e)', () => {
-  let app: INestApplication;
+describe('Users module (integration)', () => {
+  const api = fixture(UsersModule);
+  beforeAll(() => api.start());
+  afterAll(() => api.close());
+  currentAccountCases(api, '/user/me', 0);
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UsersModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+  it('serves the public greeting', async () => {
+    await request(api.server).get('/user').expect(200).expect('Users Api is status 200!');
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  it('rejects an anonymous profile request', async () => {
+    await request(api.server).get('/user/me').expect(401);
+  });
+
+  it('returns the synthetic member profile without a password', async () => {
+    const user = await api.seed();
+    const { body } = await request(api.server).get('/user/me')
+      .set('Authorization', `Bearer ${api.token(user)}`).expect(200);
+    expect(body).toMatchObject({
+      id: user.id, username: user.username, email: user.email,
+      first_name: null, last_name: null,
+    });
+    expect(body).not.toHaveProperty('password');
   });
 });

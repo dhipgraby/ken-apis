@@ -4,12 +4,16 @@ import { ApiProperty } from '@nestjs/swagger';
 export class LoginUserDto {
   @ApiProperty({
     description: 'Email or username',
+    required: true,
     example: 'admin@example.com',
   })
   @IsNotEmpty()
   identifier: string;
 
-  @ApiProperty({ example: 'Test.1234' })
+  @ApiProperty({
+    example: 'Test.1234', format: 'password', writeOnly: true,
+    required: true, minLength: 8, maxLength: 128,
+  })
   @MinLength(8)
   @MaxLength(128)
   password: string;

@@ -14,7 +14,8 @@ import {
   EmailActions,
   EmailActionType,
 } from './dto/reset-password.dto';
-import { OAuth2Client } from "google-auth-library";
+import { OAuth2Client, TokenPayload } from "google-auth-library";
+import { UserStatus } from 'lib/common/types/user.types';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -43,27 +44,43 @@ export class UserService {
     }
 
     const plainToHash = await hash(password, 10);
-    userObject = { ...userObject, password: plainToHash };
 
     try {
-      const verificationToken =
-        await this.tokenService.generateVerificationToken(
-          email,
-          EmailActions.EMAIL_VERIFICATION,
-        );
+      await this.prisma.$transaction(async (transaction) => {
+        await transaction.user.create({
+          data: { email, username, password: plainToHash },
+        });
+        const verificationToken =
+          await this.tokenService.generateVerificationToken(
+            email,
+            EmailActions.EMAIL_VERIFICATION,
+            transaction,
+          );
 
-      const newUser = await this.prisma.user.create({
-        data: userObject,
+        try {
+          await sendVerificationEmail(
+            email,
+            verificationToken.code,
+            EmailActions.EMAIL_VERIFICATION,
+          );
+        } catch {
+          throw new HttpException(
+            'Verification email unavailable',
+            HttpStatus.SERVICE_UNAVAILABLE,
+          );
+        }
+        // Delivery failure rolls back DB writes; a later commit failure can
+        // still leave a private message. Mail and DB are not atomic together.
       });
-
-      if (newUser) {
-        return {
-          status: 200,
-          message: 'New user created',
-        };
-      }
+      return { status: 200, message: 'New user created' };
     } catch (error) {
-      console.log('Signup error: ', error);
+      if (error instanceof HttpException) throw error;
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new HttpException(
+          'User with the same email or name already exists',
+          HttpStatus.FORBIDDEN,
+        );
+      }
       throw new HttpException(
         'Database error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -74,13 +91,18 @@ export class UserService {
   async googleAuth(googleAuthDto: GoogleAuthDto) {
     const { googleTokenId } = googleAuthDto;
 
-    const ticket = await client.verifyIdToken({
-      idToken: googleTokenId,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-
-    const payload = ticket.getPayload();
-    if (!payload || !payload.email) {
+    const audience = process.env.GOOGLE_CLIENT_ID;
+    if (!audience?.trim()) {
+      throw new HttpException('Invalid Google configuration', HttpStatus.FORBIDDEN);
+    }
+    let payload: TokenPayload | undefined;
+    try {
+      const ticket = await client.verifyIdToken({ idToken: googleTokenId, audience });
+      payload = ticket.getPayload();
+    } catch {
+      throw new HttpException('Invalid Google token', HttpStatus.FORBIDDEN);
+    }
+    if (!payload?.email || payload.email_verified !== true) {
       throw new HttpException('Invalid Google token', HttpStatus.FORBIDDEN);
     }
 
@@ -98,6 +120,8 @@ export class UserService {
           email: userEmail,
           password: hashedPassword,
           username: userEmail.split('@')[0] || payload.given_name,
+          userStatus: UserStatus.VERIFIED,
+          email_verified: new Date(),
         },
       });
     }
@@ -113,7 +137,6 @@ export class UserService {
     const userResponse = await this.findOne({ id: findUser.id });
     userResponse.name = payload.given_name || findUser.username;
     const data = this.formatLoginResponse(userResponse, token);
-    console.log('google auth data ------>', data);
     return data;
   }
 

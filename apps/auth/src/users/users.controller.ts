@@ -6,6 +6,7 @@ import {
   UseGuards,
   Request,
   Query,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { EmailService } from '../email/email.service';
@@ -15,6 +16,12 @@ import {
   ApiOperation,
   ApiOkResponse,
   ApiCreatedResponse,
+  ApiQuery,
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiGoneResponse,
+  ApiServiceUnavailableResponse,
 } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto, GoogleAuthDto } from './dto/login-user.dto';
@@ -24,7 +31,6 @@ import {
 } from './dto/reset-password.dto';
 import { JwtAuthGuard } from 'lib/common/auth/jwt-auth.guard';
 
-@ApiBearerAuth()
 @ApiTags('Auth')
 @Controller('auth')
 export class UsersController {
@@ -36,6 +42,9 @@ export class UsersController {
   @Post('signup')
   @ApiOperation({ summary: 'Register a new user account' })
   @ApiCreatedResponse({ description: 'User successfully created' })
+  @ApiBadRequestResponse({ description: 'Invalid registration data' })
+  @ApiForbiddenResponse({ description: 'Registration is not permitted' })
+  @ApiServiceUnavailableResponse({ description: 'Verification email delivery unavailable' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.signup(createUserDto);
   }
@@ -83,11 +92,17 @@ export class UsersController {
 
   @Get('verify')
   @ApiOperation({ summary: 'Verify user email with verification token' })
+  @ApiQuery({ name: 'token', required: true, schema: { type: 'string', format: 'uuid' } })
   @ApiOkResponse({ description: 'Email successfully verified' })
-  verifyEmail(@Query('token') token?: string) {
+  @ApiBadRequestResponse({ description: 'Missing or invalid verification token' })
+  @ApiForbiddenResponse({ description: 'Verification is not permitted' })
+  @ApiNotFoundResponse({ description: 'Verification token or user not found' })
+  @ApiGoneResponse({ description: 'Verification token expired' })
+  verifyEmail(@Query('token', new ParseUUIDPipe({ version: '4' })) token: string) {
     return this.emailService.newVerification(token);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('user')
   @ApiOperation({ summary: 'Get current authenticated user profile' })

@@ -1,22 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'lib/common/database/prisma.service';
 import { SupportRequestDto } from './dto/support-request.dto';
-import { Resend } from 'resend';
+import { deliverMail, mailTransport } from 'lib/mail/transport';
 
 // For now, support goes to this inbox as requested
 const supportTo = 'info@bom-systems.co.uk';
-const emailFrom =
-  'GoZero Support ' + process.env.PROD === 'true'
-    ? `<${process.env.EMAIL_FROM}>`
-    : `<onboarding@resend.dev>`;
 
 @Injectable()
 export class SupportService {
-  private resend: Resend;
-
-  constructor(private readonly prisma: PrismaService) {
-    this.resend = new Resend(process.env.RESEND_API_KEY);
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
   async sendSupportEmail(userId: number, payload: SupportRequestDto) {
     // Enrich with user email/username for context
@@ -46,17 +38,19 @@ export class SupportService {
     `;
 
     try {
-      const res = await this.resend.emails.send({
-        from: emailFrom,
-        to: supportTo,
+      await deliverMail({
+        senderName: 'GoZero Support',
+        to: mailTransport() === 'local' ? 'support@example.invalid' : supportTo,
         subject,
         html,
-        reply_to: user.email,
-      } as any);
-
-      if ((res as any)?.error) {
-        throw new Error((res as any).error?.message || 'Email sending error');
-      }
+        text: [
+          `From: ${user.username} (${user.email}; id: ${userId})`,
+          `Type: ${payload.type}`,
+          `Subject: ${payload.subject}`,
+          `Description: ${payload.description}`,
+        ].join('\n'),
+        replyTo: user.email,
+      });
       return { status: 202, message: 'Support request sent' };
     } catch (err: any) {
       return { status: 500, message: 'Failed to send support request' };

@@ -23,8 +23,6 @@ USER apify
 # Set the working directory
 WORKDIR /home/apify
 
-# Install Puppeteer without downloading bundled Chromium
-RUN npm install puppeteer --no-save
 
-# Copy your Puppeteer script into the Docker image
+# Copy the application into the Docker image
 COPY --chown=apify:apify . .
