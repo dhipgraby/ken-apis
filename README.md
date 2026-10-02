@@ -8,9 +8,9 @@ With `LOCAL_MODE=true`, APIs bind to `127.0.0.1`:
 
 | API | Default URL | Port override |
 | --- | --- | --- |
-| Auth | `http://127.0.0.1:3001` | `AUTH_PORT` |
-| Users | `http://127.0.0.1:3002` | `USERS_PORT` |
-| Admin | `http://127.0.0.1:3003` | `ADMIN_PORT` |
+| Auth | `http://127.0.0.1:3011` | `AUTH_PORT` |
+| Users | `http://127.0.0.1:3012` | `USERS_PORT` |
+| Admin | `http://127.0.0.1:3033` | `ADMIN_PORT` |
 
 Each exposes `/documentation` (Swagger UI) and `/documentation-json` (OpenAPI).
 These URLs are available only while the corresponding API is running.
@@ -143,8 +143,8 @@ Supported (fallback):
 Local runtime and mail:
 
 - `LOCAL_MODE=true` – loopback binding and private file mail capture; incompatible with production mode
-- `AUTH_PORT`, `USERS_PORT`, `ADMIN_PORT` – optional port overrides
-- `AUTH_BASE_URL` – local auth origin for verification links; defaults to `http://127.0.0.1:3001`, so update it when changing the auth port
+- `AUTH_PORT`, `USERS_PORT`, `ADMIN_PORT` – optional port overrides; explicit `0` requests an allocated port
+- `AUTH_BASE_URL` – local auth origin for verification links; defaults to `http://127.0.0.1:3011`, so update it when changing the auth port
 - `LOCAL_MAIL_DIR` – private capture directory, default `.local/mail` under the working directory; never an HTTP mailbox
 
 Outside local mode mail is disabled by default. Real Resend delivery requires

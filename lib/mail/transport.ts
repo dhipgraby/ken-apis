@@ -24,7 +24,7 @@ export function mailTransport(): 'local' | 'resend' {
 }
 
 export function localVerificationUrl(token: string): string {
-  const base = process.env.AUTH_BASE_URL ?? 'http://127.0.0.1:3001';
+  const base = process.env.AUTH_BASE_URL ?? 'http://127.0.0.1:3011';
   const url = new URL(base);
   if (/[?#@]/.test(base) || !['http:', 'https:'].includes(url.protocol)
     || !['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname)
