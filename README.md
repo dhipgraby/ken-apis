@@ -1,6 +1,6 @@
 # Ken Framework APIs (NestJS + Prisma)
 
-This folder contains the backend APIs (NestJS monorepo) plus Prisma (PostgreSQL). The frontends in `../users-app` and `../admin-app` call these services.
+This folder contains the backend APIs (NestJS monorepo) plus Prisma (PostgreSQL). The frontends in `../ken-users-app` and `../ken-admin-app` call these services.
 
 ## Apps and ports
 
@@ -10,7 +10,7 @@ With `LOCAL_MODE=true`, APIs bind to `127.0.0.1`:
 | --- | --- | --- |
 | Auth | `http://127.0.0.1:3011` | `AUTH_PORT` |
 | Users | `http://127.0.0.1:3012` | `USERS_PORT` |
-| Admin | `http://127.0.0.1:3033` | `ADMIN_PORT` |
+| Admin | `http://127.0.0.1:3013` | `ADMIN_PORT` |
 
 Each exposes `/documentation` (Swagger UI) and `/documentation-json` (OpenAPI).
 These URLs are available only while the corresponding API is running.

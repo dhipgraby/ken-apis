@@ -61,7 +61,7 @@ generation, image pull or automated test run occurs; `pnpm run test:local` remai
 separate. Unset `DATABASE_URL`, `PROD=true` and `NODE_ENV=production` first.
 
 All listeners bind to `127.0.0.1`, with fixed defaults: Auth `3011`, Users `3012`,
-and Admin `3033`. Override them with `AUTH_PORT`, `USERS_PORT`, and `ADMIN_PORT`;
+and Admin `3013`. Override them with `AUTH_PORT`, `USERS_PORT`, and `ADMIN_PORT`;
 explicit `0` requests an allocated port. The launcher prints
 three Swagger URLs only after their owned processes report post-listen readiness;
 each also exposes `/documentation-json`. Auth sets its own verification-link

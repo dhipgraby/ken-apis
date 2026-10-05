@@ -14,7 +14,7 @@ type ApiName = 'auth' | 'users' | 'admin';
 
 export function runtimeOptions(api: ApiName) {
   const local = isLocalMode();
-  const defaults = { auth: 3011, users: 3012, admin: 3033 };
+  const defaults = { auth: 3011, users: 3012, admin: 3013 };
   const value = process.env[`${api.toUpperCase()}_PORT`];
   if (value !== undefined && (!/^\d+$/.test(value) || Number(value) > 65535)) {
     throw new Error('Invalid port configuration');

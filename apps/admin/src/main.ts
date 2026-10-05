@@ -23,7 +23,7 @@ async function bootstrap() {
 
     // Configure CORS to allow admin frontend.
     app.enableCors({
-      origin: [
+      origin: options.local ? ['http://localhost:3034', 'http://127.0.0.1:3034'] : [
         process.env.PROD === 'false'
           ? 'http://localhost:3031'
           : 'https://admin.gozerocalculator.net',

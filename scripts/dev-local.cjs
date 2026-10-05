@@ -231,7 +231,7 @@ async function start() {
     const jwt = randomBytes(32).toString('hex');
     const env = { PATH: clean.PATH, HOME: clean.HOME, DATABASE_URL: database, JWT_SECRET: jwt, JWT_KEY: jwt,
       LOCAL_MODE: 'true', PROD: 'false', NODE_ENV: 'development',
-      AUTH_PORT: process.env.AUTH_PORT ?? '3011', USERS_PORT: process.env.USERS_PORT ?? '3012', ADMIN_PORT: process.env.ADMIN_PORT ?? '3033',
+      AUTH_PORT: process.env.AUTH_PORT ?? '3011', USERS_PORT: process.env.USERS_PORT ?? '3012', ADMIN_PORT: process.env.ADMIN_PORT ?? '3013',
       LOCAL_MAIL_DIR: path.join(session, 'outbox'), KEN_E2E_OWNER: owner, KEN_E2E_NETWORK_AUDIT: path.join(session, 'network.jsonl') };
     for (const api of ['auth', 'users', 'admin']) {
       active(); const child = launch(api, env);
